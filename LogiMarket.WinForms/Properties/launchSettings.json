@@ -1,0 +1,11 @@
+{
+  "profiles": {
+    "LogiMarket.WinForms": {
+      "commandName": "Project"
+    },
+    "Base de prueba reiniciada": {
+      "commandName": "Project",
+      "commandLineArgs": "--reiniciar-datos"
+    }
+  }
+}
