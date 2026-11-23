@@ -114,7 +114,7 @@ public class Pedido : IPrototipo<Pedido>
 
         AplicarValoracion(valoracion);
         Transicion(Estado.Validar(), fecha, usuario,
-            $"Total {Total.ToString("0.00")} con política {Politica}.");
+            $"Total {Total.ToString("0.00", CultureInfo.InvariantCulture)} con política {Politica}.");
     }
 
     public void MarcarPagado(DateTime fecha, string usuario, string referenciaPago)
