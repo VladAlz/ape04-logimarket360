@@ -8,3 +8,6 @@ obj/
 TestResults/
 comprobantes/
 avisos/
+
+# Incluir las clases que generan los comprobantes
+!/LogiMarket.Application/Comprobantes/
