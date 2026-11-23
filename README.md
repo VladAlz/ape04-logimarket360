@@ -83,3 +83,20 @@ dotnet ef migrations add NombreMigracion --project LogiMarket.Infrastructure --s
 - Los comprobantes son internos de demostración, sin validez tributaria.
 - La pestaña "Auditoría y demostración" permite cambiar el proveedor de pago (LEGADO / NOVAPAY), forzar un rechazo de cobro
   y un fallo del notificador para probar el Outbox. Esas opciones no cambian las reglas de negocio.
+
+## Informe y trazabilidad
+
+[Consultar el informe APE04 en PDF](docs/informe-ape04.pdf).
+
+La aplicación se desarrolló y verificó antes de incorporar el proyecto a Git.
+La etiqueta `v1.0.0` identifica el código de la entrega original.
+La rama `fix/regresiones-r01-r02` reproduce dos incidencias del informe
+y añade pruebas automatizadas para comprobar sus correcciones.
+
+| Incidencia | Evidencia del informe | Prueba automatizada |
+|---|---|---|
+| R01. Separador decimal en el historial | Tabla 12, pág. 60 y captura C50 | `R01_HistorialConservaPuntoDecimal` |
+| R02. Entrega anterior al despacho | Tabla 12, pág. 61 y captura C48 | `R02_RechazaEntregaAnteriorYConservaEstado` |
+
+Para compilar la solución `.slnx` desde la terminal se requiere el SDK
+de .NET 9.0.200 o posterior. La aplicación utiliza .NET 8 para Windows.
