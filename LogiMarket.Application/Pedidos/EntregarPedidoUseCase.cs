@@ -39,6 +39,9 @@ public sealed class EntregarPedidoUseCase
 
             // La entrega no puede quedar antes del despacho
             var despacho = await _despachos.ObtenerPorPedidoAsync(pedidoId);
+            if (despacho is not null && fechaEntrega.Date < despacho.FechaDespacho.Date)
+                throw new ReglaNegocioException(
+                    $"La fecha de entrega {fechaEntrega:dd/MM/yyyy} es anterior al despacho del {despacho.FechaDespacho:dd/MM/yyyy}.");
 
             pedido.Entregar(fechaEntrega, _sesion.NombreUsuario);
             despacho?.RegistrarEntrega(fechaEntrega);
