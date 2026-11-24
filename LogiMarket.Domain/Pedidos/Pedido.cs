@@ -148,11 +148,25 @@ public class Pedido : IPrototipo<Pedido>
     }
 
     // Requerimiento por SKU final segun las instantaneas de cada linea
-    public IReadOnlyDictionary<string, int> RequerimientoStock() =>
-        _lineas
-            .SelectMany(l => l.Componentes.Select(c => (c.Sku, Cantidad: c.CantidadPorUnidad * l.Cantidad)))
-            .GroupBy(x => x.Sku)
-            .ToDictionary(g => g.Key, g => g.Sum(x => x.Cantidad));
+    public IReadOnlyDictionary<string, int> RequerimientoStock()
+    {
+        var cantidades = new Dictionary<string, int>();
+        foreach (var linea in _lineas)
+        {
+            foreach (var componente in linea.Componentes)
+            {
+                var sku = componente.Sku;
+                var cantidad = componente.CantidadPorUnidad * linea.Cantidad;
+
+                if (cantidades.TryGetValue(sku, out var anterior))
+                    cantidades[sku] = Math.Max(anterior, cantidad);
+                else
+                    cantidades.Add(sku, cantidad);
+            }
+        }
+
+        return cantidades;
+    }
 
     public MementoPedido CrearMemento(DateTime fecha, string descripcion)
     {
