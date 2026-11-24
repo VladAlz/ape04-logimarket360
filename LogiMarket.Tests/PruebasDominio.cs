@@ -19,6 +19,31 @@ public class PruebasDominio
 {
     private static readonly ArmadorCatalogo Catalogo = Fabricas.Catalogo();
 
+    [Fact]
+    public void R03_CuatroKitsAlcanzanElDescuentoMayorista()
+    {
+        var pedido = PedidoDe(CategoriaCliente.Normal, FormaEntrega.Estandar,
+            ("KIT_TELETRABAJO", 4));
+
+        var valoracion = Fabricas.Calculadora().Valorar(pedido);
+
+        Assert.Equal(209.00m, valoracion.Total);
+        Assert.Equal("MAYORISTA", valoracion.Politica);
+        Assert.Equal(36.00m, valoracion.Descuento);
+    }
+
+    [Fact]
+    public void R04_SumaTecladosDelKitYDeLaLineaSuelta()
+    {
+        var pedido = PedidoDe(CategoriaCliente.Normal, FormaEntrega.Estandar,
+            ("KIT_OFICINA", 2), ("P02", 4));
+
+        var requerido = pedido.RequerimientoStock();
+
+        Assert.Equal(6, requerido["P02"]);
+        Assert.Equal(2, requerido["P01"]);
+    }
+
     private static Pedido PedidoDe(CategoriaCliente categoria, FormaEntrega entrega, params (string Codigo, int Cantidad)[] lineas)
     {
         var builder = new PedidoBuilder().ParaCliente(Fabricas.Cliente("Prueba", categoria)).ConEntrega(entrega);
