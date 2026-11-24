@@ -20,20 +20,7 @@ public sealed class CalculadoraPedido
     public ValoracionPedido Valorar(Pedido pedido)
     {
         var subtotal = Dinero.Redondear(pedido.Lineas.Sum(l => l.Subtotal));
-        var unidades = 0;
-        foreach (var linea in pedido.Lineas)
-        {
-            if (linea.EsKit)
-            {
-                unidades += linea.Cantidad;
-                continue;
-            }
-
-            foreach (var componente in linea.Componentes)
-            {
-                unidades += componente.CantidadPorUnidad * linea.Cantidad;
-            }
-        }
+        var unidades = pedido.UnidadesFisicas;
         var politica = _selector.Elegir(new ContextoDescuento(pedido.CategoriaCliente, unidades, subtotal));
         var descuento = Dinero.Redondear(subtotal * politica.Tasa);
         var entrega = ServicioEntrega.Para(pedido.Entrega, _fabricas);
